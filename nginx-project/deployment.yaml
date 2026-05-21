@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: gcr.io/srinisre023/my-nginx-app:v3   # or 2823/my-nginx-app:v3 from Docker Hub
+        ports:
+        - containerPort: 80
+        resources: # Added to prevent Out-Of-Memory crashes on e2-micro
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"  
+
